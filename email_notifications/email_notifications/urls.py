@@ -20,5 +20,5 @@ from notifications import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("",views.login,name='login'),
-    path('dashboard/',include('notifications.urls')),
+    path('home/',include('notifications.urls')),
 ]

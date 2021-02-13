@@ -1,0 +1,163 @@
+<!doctype html>
+
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Notification Email</title>
+    <style>
+      body {
+        background-color: #f6f6f6;
+        font-family: sans-serif;
+        -webkit-font-smoothing: antialiased;
+        font-size: 14px;
+        line-height: 1.4;
+        margin: 0;
+        padding: 0;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%; }
+      table {
+        border-collapse: separate;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+        width: 100%; }
+      .body {
+        background-color: #f6f6f6;
+        width: 100%; }
+      /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+      .container {
+        display: block;
+        Margin: 0 auto !important;
+        /* makes it centered */
+        max-width: 580px;
+        padding: 10px;
+        width: 580px; }
+      /* This should also be a block element, so that it will fill 100% of the .container */
+      .content {
+        box-sizing: border-box;
+        display: block;
+        Margin: 0 auto;
+        max-width: 580px;
+        padding: 10px; }
+      /* -------------------------------------
+          HEADER, FOOTER, MAIN
+      ------------------------------------- */
+      .main {
+        background: #fff;
+        border-radius: 3px;
+        width: 100%; }
+      .wrapper {
+        box-sizing: border-box;
+        padding: 20px; }
+      .footer {
+        clear: both;
+        padding-top: 10px;
+        text-align: center;
+        width: 100%; }
+        .footer td,
+        .footer p,
+        .footer span,
+        .footer a {
+          color: #999999;
+          font-size: 12px;
+          text-align: left; }
+        .header{
+          padding: 1px;
+          color: WHITE;
+          border-radius: 5px;
+          background-color: #2651de;
+          background-repeat: no-repeat;
+        }
+        .notice{
+          color: #999999;
+        }
+      /* -------------------------------------
+          TYPOGRAPHY
+      ------------------------------------- */
+      h1,
+      h2,
+      h3,
+      h4 {
+        color: #000000;
+        font-family: sans-serif;
+        font-weight: 400;
+        line-height: 1.4;
+        margin: 0;
+        Margin-bottom: 30px; }
+      h1 {
+        font-size: 35px;
+        font-weight: 300;
+        text-align: center;
+        text-transform: capitalize; }
+
+      .tickets{
+        border: 1px solid black;
+
+      }
+      .head{
+        border: 1px solid black;
+      }
+      .tickets {
+        width: 100%;
+        border-collapse: collapse;
+      }
+    </style>
+  </head>
+  <body class="">
+    <table border="0" cellpadding="0" cellspacing="0" class="body">
+      <tr>
+        <td>&nbsp;</td>
+        <td class="container">
+          <div class="content">
+            <table class="main">
+              <tr>
+                <td class="wrapper">
+                  <img src='data:image/png;base64,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' alt="draup-logo" width="120" height="60">
+                  <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td>
+                        <br><h1 class="header">Today Deliverable</h1>
+                          <table class="tickets">
+                            <tr>
+                              <th class='head'>Ticket No.</th>
+                              <th class='head'>Subject</th>
+                              <th class='head'>Stakeholder</th>
+                              <th class='head'>Company</th>
+                            </tr>
+                            <tr>
+                              <td style="text-align:center" class='head'>3453</td>
+                              <td style="text-align:center" class='head'>Gulf Arabic and Egyptian Language Research - Refresh</td>
+                              <td style="text-align:center" class='head'>Stacy Foster</td>
+                              <td style="text-align:center" class='head'>Amazon</td>
+                            </tr>
+                          </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+            <div class="notice">
+              <p><small>This email was sent to keep you informed about deliverables.</small></p>
+            </div>
+            <div class="footer">
+              <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td class="content-block">
+                    <span class="apple-link">Thank you,</span>
+                    <br><span class="apple-link">Draup Customer Sucess,</span>
+                    <br><span class="apple-link">Santa Clara | Houston | Bangalore | Gurgaon | Nemili | Coimbatore</span>
+
+                    <br>
+                    <br><span class="apple-link"><em>Please contact <a href="mailto:customersupport_nemili@draup.com">customersupport_nemili@draup.com</a> for any queries</em></span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </body>
+</html>
