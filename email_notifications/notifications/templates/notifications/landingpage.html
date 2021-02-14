@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Home</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+		{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/landingpage.css' %}">
+</head>
+<body>
+
+	<div class="header">
+     <div class="navbar">
+         <div class="logo">
+             <a href="{%url 'logout' %}"><img src="{% static '/images/draup-logo.png' %}"></a>
+         </div>
+         <div class="menu">
+             <ul>
+                 <a href="{%url 'home:salesremainder'%}"><li>Sales Remainders</li></a>  
+                 <li>Talent Remainders</li>
+                 <li>Contact Us</li>
+             </ul>
+         </div>
+         <div class="login-btn">Welcome {{user}} !!</div>
+     </div>
+
+     <div class="banner">
+         <div class="app-text">
+					 	<br>
+						<br>
+						<br>
+             <h1>A Data Product with a Human Touch</h1>
+						 <a href="https://platform.draup.com/"><br><div class="platform">Go to Platform</div></a>
+						 <div class="app-picture">
+             <img src="{% static '/images/10.jpg' %}" width="540" height="390">
+						</div>
+         </div>
+     </div>
+    </div>
+</body>
+</html>

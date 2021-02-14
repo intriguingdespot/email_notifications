@@ -1,0 +1,170 @@
+<!doctype html>
+{% load static %}
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <title>Notification Email</title>
+    <style>
+      body {
+        background-color: #f6f6f6;
+        font-family: sans-serif;
+        -webkit-font-smoothing: antialiased;
+        font-size: 14px;
+        line-height: 1.4;
+        margin: 0;
+        padding: 0;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%; }
+      table {
+        border-collapse: separate;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+        width: 100%; }
+      .body {
+        background-color: #f6f6f6;
+        width: 100%; }
+      /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+      .container {
+        display: block;
+        Margin: 0 auto !important;
+        /* makes it centered */
+        max-width: 580px;
+        padding: 10px;
+        width: 580px; }
+      /* This should also be a block element, so that it will fill 100% of the .container */
+      .content {
+        box-sizing: border-box;
+        display: block;
+        Margin: 0 auto;
+        max-width: 580px;
+        padding: 10px; }
+      /* -------------------------------------
+          HEADER, FOOTER, MAIN
+      ------------------------------------- */
+      .main {
+        background: #fff;
+        border-radius: 3px;
+        width: 100%; }
+      .wrapper {
+        box-sizing: border-box;
+        padding: 20px; }
+      .footer {
+        clear: both;
+        padding-top: 10px;
+        text-align: center;
+        width: 100%; }
+        .footer td,
+        .footer p,
+        .footer span,
+        .footer a {
+          color: #999999;
+          font-size: 12px;
+          text-align: left; }
+        .header{
+          padding: 25px;
+          color: WHITE;
+          border-radius: 5px;
+          background-color: #2651de;
+          background-repeat: no-repeat;
+          font-size: 15px;
+        }
+        .notice{
+          color: #999999;
+        }
+      /* -------------------------------------
+          TYPOGRAPHY
+      ------------------------------------- */
+      h1,
+      h2,
+      h3,
+      h4 {
+        color: #000000;
+        font-family: sans-serif;
+        font-weight: 400;
+        line-height: 1.4;
+        margin: 0;
+        Margin-bottom: 30px; }
+      h1 {
+        font-size: 35px;
+        font-weight: 300;
+        text-align: center;
+        text-transform: capitalize; }
+
+      .tickets{
+        border: 1px solid black;
+
+
+      }
+      .head{
+        border: 1px solid black;
+
+      }
+      .tickets {
+        width: 100%;
+        border-collapse: collapse;
+
+      }
+    </style>
+  </head>
+  <body class="">
+    <table border="0" cellpadding="0" cellspacing="0" class="body">
+      <tr>
+        <td>&nbsp;</td>
+        <td class="container">
+          <div class="content">
+            <table class="main">
+              <tr>
+                <td class="wrapper">
+                  <img src="C:\Users\User\github\email_notifications\email_notifications\notifications\static\images\draup-logo.png" alt="draup-logo" width="120" height="60">
+                  <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td>
+                        <br><h1 class="header" style="text-align:left">Hi Universe Team, <br><br>This is to keep you reminded about the deliverables today </h1>
+                          <table class="tickets">
+                            <tr>
+                              <th class='head'>Ticket No.</th>
+                              <th class='head'>Subject</th>
+                              <th class='head'>Stakeholder</th>
+                              <th class='head'>Company</th>
+                            </tr>
+                            {% for entry in Ticket %}
+                            <tr>
+                              <td style="text-align:center" class='head'>{{entry.Ticket_ID}}</td>
+                              <td style="text-align:left" class='head'>{{entry.Subject}}</td>
+                              <td style="text-align:center" class='head'>{{entry.Full_name}}</td>
+                              <td style="text-align:left" class='head'>{{entry.Company_Name}}</td>
+                            </tr>
+                            {% endfor %}
+                          </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+            <div class="notice">
+              <p><small>This email was sent to keep you informed about deliverables.</small></p>
+            </div>
+            <div class="footer">
+              <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td class="content-block">
+                    <span class="apple-link">Thank you,</span>
+                    <br><span class="apple-link">Draup Customer Sucess,</span>
+                    <br><span class="apple-link">Santa Clara | Houston | Bangalore | Gurgaon | Nemili | Coimbatore</span>
+
+                    <br>
+                    <br><span class="apple-link"><em>Please contact <a href="mailto:customersupport_nemili@draup.com">customersupport_nemili@draup.com</a> for any queries</em></span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </body>
+</html>

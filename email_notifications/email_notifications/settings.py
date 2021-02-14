@@ -103,11 +103,11 @@ AUTH_PASSWORD_VALIDATORS = [
 #smtp Configuration
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = "smtp.zoho.com"
+EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_SSL = True
-EMAIL_PORT = 587
+EMAIL_PORT = 465
 EMAIL_HOST_USER = "intriguing.despot@gmail.com"
-EMAIL_HOST_PASSWORD = "despot@123"
+EMAIL_HOST_PASSWORD = "kesavan@123"
 
 
 
