@@ -21,6 +21,9 @@ def login(request):
 
 def dashboard(request):
     if request.method == "POST":
+        today=str(date.today())
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today)
+        tick_dict = {'Ticket':tickets}
         #send_mail(
         #'You have Deliverable Today !!!',
         #"Good Eve !!!",
@@ -28,7 +31,7 @@ def dashboard(request):
         #['kesavan.ramalingam@draup.com'],
         #fail_silently=False)
         #print("mail sent sucess fully")
-        html_content = render_to_string("notifications/notification.html")
+        html_content = render_to_string("notifications/notification.html",context=tick_dict)
         text_content = strip_tags(html_content)
         email = EmailMultiAlternatives(
         "You have a Deliverable !!",

@@ -124,12 +124,14 @@
                               <th class='head'>Stakeholder</th>
                               <th class='head'>Company</th>
                             </tr>
+                            {% for entry in Ticket %}
                             <tr>
-                              <td style="text-align:center" class='head'>3453</td>
-                              <td style="text-align:center" class='head'>Gulf Arabic and Egyptian Language Research - Refresh</td>
-                              <td style="text-align:center" class='head'>Stacy Foster</td>
-                              <td style="text-align:center" class='head'>Amazon</td>
+                              <td style="text-align:center" class='head'>{{entry.Ticket_ID}}</td>
+                              <td style="text-align:center" class='head'>{{entry.Subject}}</td>
+                              <td style="text-align:center" class='head'>{{entry.Full_name}}</td>
+                              <td style="text-align:center" class='head'>{{entry.Company_Name}}</td>
                             </tr>
+                            {% endfor %}
                           </table>
                       </td>
                     </tr>
