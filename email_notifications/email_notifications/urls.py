@@ -19,6 +19,7 @@ from notifications import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("",views.login,name='login'),
+    path("",views.login_user,name='login_user'),
     path('home/',include('notifications.urls')),
+    path('logout/',views.user_logout,name='logout'),
 ]

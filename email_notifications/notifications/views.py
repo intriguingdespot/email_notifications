@@ -1,7 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect,HttpResponse
+
+from django.urls import reverse
+
+from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.decorators import login_required
+
 from .models import Ticket
-import pandas as pd
 from datetime import date
 
 import csv , io
@@ -15,9 +20,32 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 
-# Create your views here.
-def login(request):
-    return render(request,'notifications/login.html')
+def login_user(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username,password=password)
+        if user:
+            if user.is_active:
+                login(request,user)
+                return HttpResponseRedirect('home')
+            else:
+                return HttpResponse("user not active contact admin")
+        else:
+            return HttpResponse("Invalid, If you don't have the access or forgotted your credentials please reach us on customersupport_nemili@draup.com")
+    else:
+        if request.user.is_authenticated:
+            return HttpResponseRedirect('home')
+        else:
+            return render(request,'notifications/login.html',{})
+@login_required(login_url = 'login_user')
+def home(request):
+    return render(request,'notifications/landingpage.html')
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('login_user'))
 
 def dashboard(request):
     if request.method == "POST":
@@ -31,20 +59,20 @@ def dashboard(request):
         #['kesavan.ramalingam@draup.com'],
         #fail_silently=False)
         #print("mail sent sucess fully")
-        html_content = render_to_string("notifications/notification.html",context=tick_dict)
+        html_content = render_to_string("notifications/universe_notification.html",context=tick_dict)
         text_content = strip_tags(html_content)
         email = EmailMultiAlternatives(
         "You have a Deliverable !!",
         text_content,
         settings.EMAIL_HOST_USER,
         ['intriguing.despot@gmail.com'],
-        cc=['kesavan.ramalingam@draup.com']
+        cc=[]
         )
         email.attach_alternative(html_content,"text/html")
         email.send()
     return render(request,'notifications/dashboard.html')
 
-def salesview(request):
+def salesremainder(request):
     today=str(date.today())
     tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today)
     tick_dict = {'Ticket':tickets}
@@ -78,5 +106,5 @@ def upload(request):
             Company_Name = column[13],
             )
         context = {}
-        return render(request,'notifications/sales.html',context)
+        return render(request,'notifications/landingpage.html',context)
     return render(request,'notifications/upload.html')

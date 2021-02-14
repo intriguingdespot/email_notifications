@@ -3,13 +3,14 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: #e6f2f1 !important;
+  background:#FFFFF;
 }
+
 .user_card {
   width: 350px;
   margin-top: auto;
   margin-bottom: auto;
-  background: #74cfbf;
+  background: #02cde8;
   position: relative;
   display: flex;
   justify-content: center;

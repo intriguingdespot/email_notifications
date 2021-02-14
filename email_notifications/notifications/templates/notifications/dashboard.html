@@ -8,7 +8,8 @@
     <h1>welcome!!!</h1>
     <form  method="post">
       {% csrf_token %}
-      <input class="btn login_btn" type="submit" value="Login">
+      <input class="btn login_btn" type="submit" value="Send Email">
+      <a href="{%url 'home:salesremainder'%}"><input class="btn login_btn" type="button" value="Cancel"></a>
     </form>
 
   </body>

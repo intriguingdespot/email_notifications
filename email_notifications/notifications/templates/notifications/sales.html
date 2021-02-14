@@ -32,10 +32,8 @@
   </head>
   <body>
     <h1>Sales - Today Deliverables</h1>
-
-    <p></p>
-    <a href="{%url 'home:upload'%}"> Click here </a></p>
-    <table id="customers">
+    <h3>Last Update - </h3>
+      <table id="customers">
       <tr>
         <th>Ticket_ID</th>
         <th>Subject</th>
@@ -52,7 +50,8 @@
         <td>{{entry.Estimated_Delivery_Date}}</td>
       </tr>
       {% endfor %}
-
     </table>
+    <br><a href="{%url 'home:upload'%}">Refresh this Table</a></p>
+    <br><a href="{%url 'home:dashboard'%}">Remainder</a></p>
   </body>
 </html>
