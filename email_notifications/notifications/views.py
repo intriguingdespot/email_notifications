@@ -47,6 +47,7 @@ def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('login_user'))
 
+@login_required(login_url = 'login_user')
 def dashboard(request):
     if request.method == "POST":
         today=str(date.today())
@@ -70,14 +71,17 @@ def dashboard(request):
         )
         email.attach_alternative(html_content,"text/html")
         email.send()
+        return home(request)
     return render(request,'notifications/dashboard.html')
 
+@login_required(login_url = 'login_user')
 def salesremainder(request):
     today=str(date.today())
     tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today)
     tick_dict = {'Ticket':tickets}
     return render(request,'notifications/sales.html',context=tick_dict)
 
+@login_required(login_url = 'login_user')
 def upload(request):
     if request.method == 'POST':
         tickets=Ticket.objects.all()
@@ -106,5 +110,5 @@ def upload(request):
             Company_Name = column[13],
             )
         context = {}
-        return render(request,'notifications/landingpage.html',context)
+        return home(request)
     return render(request,'notifications/upload.html')

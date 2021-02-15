@@ -18,6 +18,5 @@ class Ticket(models.Model):
     Full_name = models.CharField(max_length=256)
     Email = models.EmailField(max_length=256)
     Company_Name = models.CharField(max_length=256)
-
     def __str__(self):
         return self.Subject
