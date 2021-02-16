@@ -1,31 +1,36 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
+<title>Draup-Remainders</title>
+{% extends 'notifications/base.html' %}
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  </head>
-  <body>
-    <div class="container">
+{% block body_block %}
       <div class="jumbotron">
-    <h1>Upload csv!!</h1>
+    <h5><em>Please use .csv file format, make sure your table must follow below order ....</em></h5>
+    <br>
+    <table id="customers">
+    <tr>
+      <th style="text-align:center">Ticket ID</th>
+      <th style="text-align:center">Subject</th>
+      <th style="text-align:center">Status</th>
+      <th style="text-align:center">Source</th>
+      <th style="text-align:center">Type</th>
+      <th style="text-align:center">Agent</th>
+      <th style="text-align:center">Group</th>
+      <th style="text-align:center">Created time</th>
+      <th style="text-align:center">Product</th>
+      <th style="text-align:center">Follow-up Date</th>
+      <th style="text-align:center">Estimated Delivery Date</th>
+      <th style="text-align:center">Full name</th>
+      <th style="text-align:center">Email</th>
+      <th style="text-align:center">Company Name</th>
+    </tr>
+  </table>
+  <br>
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <label for="">Upload a file</label>
       <input type="file" name="file">
-      <p></p>
-      <button type="submit" >Upload</button>
+      <br>
+      <br>
+      <button onclick="return confirm('Are you sure do you want to continue ?');" class='btn btn-success' type="submit">Upload</button>
     </form>
     </div>
-
-    </div>
-
-  </body>
-</html>
+ {% endblock %}

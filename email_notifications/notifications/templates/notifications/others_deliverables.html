@@ -1,0 +1,36 @@
+<title>Draup-Remainders</title>
+{% extends 'notifications/base.html' %}
+
+{% block body_block %}
+<div class="tab">
+  <br>
+  <h1> Deliverables !!</h1>
+  <br>
+    <table id="customers">
+    <tr>
+      <th style="text-align:center">S.No.</th>
+      <th style="text-align:center">Ticket No.</th>
+      <th style="text-align:center">Subject</th>
+      <th style="text-align:center">Stakeholder</th>
+      <th style="text-align:center">Company</th>
+      <th style="text-align:center">Delivery Date</th>
+      <th style="text-align:center">Type</th>
+    </tr>
+    {% for entry in Ticket %}
+    <tr>
+      <td style="text-align:center">{{forloop.counter}}</td>
+      <td  style="text-align:center">{{entry.Ticket_ID}}</td>
+      <td>{{entry.Subject}}</td>
+      <td>{{entry.Full_name}}</td>
+      <td>{{entry.Company_Name}}</td>
+      <td style="text-align:center">{{entry.Estimated_Delivery_Date}}</td>
+      <td>{{entry.Type}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <form  method="post">
+    {% csrf_token %}
+    <br><input onclick="return confirm('Are you sure do you want to continue ?');" class="btn btn-primary" type="submit" value="Send Notification">
+  </form>
+</div>
+{% endblock %}

@@ -48,10 +48,17 @@ def user_logout(request):
     return HttpResponseRedirect(reverse('login_user'))
 
 @login_required(login_url = 'login_user')
-def dashboard(request):
+def salesremainder(request):
+    today=str(date.today())
+    tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today)
+    tick_dict = {'Ticket':tickets}
+    return render(request,'notifications/today_deliverables.html',context=tick_dict)
+
+@login_required(login_url = 'login_user')
+def braindesk(request):
     if request.method == "POST":
         today=str(date.today())
-        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today)
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains="Braindesk Request")
         tick_dict = {'Ticket':tickets}
         #send_mail(
         #'You have Deliverable Today !!!',
@@ -60,38 +67,84 @@ def dashboard(request):
         #['kesavan.ramalingam@draup.com'],
         #fail_silently=False)
         #print("mail sent sucess fully")
-        html_content = render_to_string("notifications/universe_notification.html",context=tick_dict)
+        html_content = render_to_string("notifications/notification.html",context=tick_dict)
         text_content = strip_tags(html_content)
         email = EmailMultiAlternatives(
         "You have a Deliverable !!",
         text_content,
         settings.EMAIL_HOST_USER,
         ['intriguing.despot@gmail.com'],
-        cc=[]
+        #cc=['kesavan.ramalingam@draup.com']
         )
         email.attach_alternative(html_content,"text/html")
         email.send()
-        return home(request)
-    return render(request,'notifications/dashboard.html')
+        return salesremainder(request)
+    else:
+        today=str(date.today())
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains="Braindesk Request")
+        tick_dict = {'Ticket':tickets}
+        return render(request,'notifications/braindesk_deliverables.html',context=tick_dict)
 
 @login_required(login_url = 'login_user')
-def salesremainder(request):
-    today=str(date.today())
-    tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today)
-    tick_dict = {'Ticket':tickets}
-    return render(request,'notifications/sales.html',context=tick_dict)
+def universe(request):
+    if request.method == "POST":
+        today=str(date.today())
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains = 'Universe Account Addition Request')
+        tick_dict = {'Ticket':tickets}
+        html_content = render_to_string("notifications/notification.html",context=tick_dict)
+        text_content = strip_tags(html_content)
+        email = EmailMultiAlternatives(
+        "You have a Deliverable !!",
+        text_content,
+        settings.EMAIL_HOST_USER,
+        ['intriguing.despot@gmail.com'],
+        #cc=['kesavan.ramalingam@draup.com']
+        )
+        email.attach_alternative(html_content,"text/html")
+        email.send()
+        return salesremainder(request)
+    else:
+        today=str(date.today())
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains = 'Universe Account Addition Request')
+        tick_dict = {'Ticket':tickets}
+        return render(request,'notifications/universe_deliverables.html',context=tick_dict)
+
+@login_required(login_url = 'login_user')
+def others(request):
+    if request.method == "POST":
+        today=str(date.today())
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today).exclude(Type__icontains = 'Universe Account Addition Request').exclude(Type__icontains="Braindesk Request")
+        tick_dict = {'Ticket':tickets}
+        html_content = render_to_string("notifications/notification.html",context=tick_dict)
+        text_content = strip_tags(html_content)
+        email = EmailMultiAlternatives(
+        "You have a Deliverable !!",
+        text_content,
+        settings.EMAIL_HOST_USER,
+        ['intriguing.despot@gmail.com'],
+        #cc=['kesavan.ramalingam@draup.com']
+        )
+        email.attach_alternative(html_content,"text/html")
+        email.send()
+        return salesremainder(request)
+    else:
+        today=str(date.today())
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today).exclude(Type__icontains = 'Universe Account Addition Request').exclude(Type__icontains="Braindesk Request")
+        tick_dict = {'Ticket':tickets}
+        return render(request,'notifications/others_deliverables.html',context=tick_dict)
+
 
 @login_required(login_url = 'login_user')
 def upload(request):
     if request.method == 'POST':
-        tickets=Ticket.objects.all()
-        tickets.delete()
         csv_file = request.FILES['file']
         if not csv_file.name.endswith('.csv'):
             messages.error(request,'Please use csv')
         data_set = csv_file.read().decode('UTF-8')
         io_string = io.StringIO(data_set)
         next(io_string)
+        tickets=Ticket.objects.all()
+        tickets.delete()
         for column in csv.reader(io_string,delimiter=","):
             created = Ticket.objects.update_or_create(
             Ticket_ID = column[0],
