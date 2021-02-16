@@ -90,7 +90,7 @@ def universe(request):
     if request.method == "POST":
         today=str(date.today())
         tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains = 'Universe Account Addition Request')
-        tick_dict = {'Ticket':tickets,'name':"Braindesk Team,"}
+        tick_dict = {'Ticket':tickets,'name':"Universe Team,"}
         html_content = render_to_string("notifications/notification.html",context=tick_dict)
         text_content = strip_tags(html_content)
         email = EmailMultiAlternatives(
