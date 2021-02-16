@@ -59,7 +59,7 @@ def braindesk(request):
     if request.method == "POST":
         today=str(date.today())
         tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains="Braindesk Request")
-        tick_dict = {'Ticket':tickets}
+        tick_dict = {'Ticket':tickets,'name':"Braindesk Team,"}
         #send_mail(
         #'You have Deliverable Today !!!',
         #"Good Eve !!!",
@@ -90,7 +90,7 @@ def universe(request):
     if request.method == "POST":
         today=str(date.today())
         tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains = 'Universe Account Addition Request')
-        tick_dict = {'Ticket':tickets}
+        tick_dict = {'Ticket':tickets,'name':"Braindesk Team,"}
         html_content = render_to_string("notifications/notification.html",context=tick_dict)
         text_content = strip_tags(html_content)
         email = EmailMultiAlternatives(
@@ -114,7 +114,7 @@ def others(request):
     if request.method == "POST":
         today=str(date.today())
         tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today).exclude(Type__icontains = 'Universe Account Addition Request').exclude(Type__icontains="Braindesk Request")
-        tick_dict = {'Ticket':tickets}
+        tick_dict = {'Ticket':tickets,'name':"Team,"}
         html_content = render_to_string("notifications/notification.html",context=tick_dict)
         text_content = strip_tags(html_content)
         email = EmailMultiAlternatives(
