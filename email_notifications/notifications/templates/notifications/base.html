@@ -43,6 +43,7 @@ function myFunction() {
           <a class="nav-item nav-link " href="{%url 'home:braindesk'%}">Braindesk</a>
           <a class="nav-item nav-link" href="{%url 'home:universe'%}">Universe</a>
           <a class="nav-item nav-link" href="{%url 'home:others'%}">Others</a>
+
           <!-- DROPDOWN MENU -->
 
 
@@ -52,6 +53,7 @@ function myFunction() {
 
         <!-- STUFF ON THE RIGHT -->
         <div class="navbar-nav ml-auto">
+          <a class="nav-item nav-link" href="{%url 'home:others'%}">Status</a>
           <li class="dropdown dropdown-masked">
             <a href="#" class="nav-link dropdown-toggle" id="navbar-dropdown-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Welcome {{user}}</a>
             <ul class="dropdown-menu list-inline">
