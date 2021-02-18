@@ -8,8 +8,10 @@ from django.urls import reverse
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 
-from .models import Ticket
-from datetime import date
+from .models import Ticket,Confirmed_Ticket
+from datetime import date,datetime
+from django.utils import timezone
+
 
 import csv , io
 
@@ -48,6 +50,9 @@ def home(request):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('login_user'))
+
+def thankyou(request):
+    return render(request,'notifications/thankyou.html')
 
 @login_required(login_url = 'login_user')
 def salesremainder(request):
@@ -140,8 +145,8 @@ def braindesk_confirm(request):
     if request.method == "POST":
         some_var = request.POST.getlist('Ticket_ID')
         for i in some_var:
-            print(i)
-        return HttpResponse("Done")
+            Confirmed_Ticket.objects.update_or_create(Ticket_ID=i,Created_time=timezone.now())
+        return thankyou(request)
     else:
         today=str(date.today())
         tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains="Braindesk Request")
@@ -152,14 +157,21 @@ def universe_confirm(request):
     if request.method == "POST":
         some_var = request.POST.getlist('Ticket_ID')
         for i in some_var:
-            print(i)
-        return HttpResponse("Done")
+            Confirmed_Ticket.objects.update_or_create(Ticket_ID=i,Created_time=timezone.now())
+        return thankyou(request)
     else:
         today=str(date.today())
         tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains = 'Universe Account Addition Request')
         tick_dict = {'Ticket':tickets}
         return render(request,'notifications/universe_confirm.html',context=tick_dict)
 
+def status(request):
+    #d = datetime.now()
+    #print(d)
+    #print(d.date())
+    Confirmed_Tickets = Confirmed_Ticket.objects.all()
+    tick_dict = {'Ticket':Confirmed_Tickets}
+    return render(request,'notifications/status.html',context=tick_dict)
 
 @login_required(login_url = 'login_user')
 def upload(request):

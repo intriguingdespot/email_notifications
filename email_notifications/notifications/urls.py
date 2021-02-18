@@ -12,5 +12,5 @@ urlpatterns=[
     path('sales/universe',views.universe,name='universe'),
     path('sales/others',views.others,name='others'),
     path('upload/',views.upload,name='upload'),
-    #path('sales/status',views.status,name='status'),
+    path('sales/status',views.status,name='status'),
 ]

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.utils import timezone
 # Create your models here.
 
 class Ticket(models.Model):
@@ -20,3 +20,7 @@ class Ticket(models.Model):
     Company_Name = models.CharField(max_length=256)
     def __str__(self):
         return self.Subject
+
+class Confirmed_Ticket(models.Model):
+    Ticket_ID = models.IntegerField(unique=True)
+    Created_time = models.DateTimeField()
