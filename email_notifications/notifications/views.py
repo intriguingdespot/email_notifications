@@ -12,6 +12,8 @@ from .models import Ticket,Confirmed_Ticket
 from datetime import date,datetime
 from django.utils import timezone
 
+from django.db import IntegrityError
+
 
 import csv , io
 
@@ -64,10 +66,11 @@ def salesremainder(request):
 
 @login_required(login_url = 'login_user')
 def braindesk(request):
+    lis=['Braindesk Report Refresh Request','Braindesk Request']
     if request.method == "POST":
         today=str(date.today())
-        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains="Braindesk Request")
-        tick_dict = {'Ticket':tickets,'name':"Braindesk Team,","url":"braindesk-deliverables"}
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains='Braindesk Request')
+        tick_dict = {'Ticket':tickets,'name':"Braindesk Team","url":"braindesk-deliverables"}
         #send_mail(
         #'You have Deliverable Today !!!',
         #"Good Eve !!!",
@@ -75,7 +78,7 @@ def braindesk(request):
         #['kesavan.ramalingam@draup.com'],
         #fail_silently=False)
         #print("mail sent sucess fully")
-        html_content = render_to_string("notifications/notification.html",context=tick_dict)
+        html_content = render_to_string("notifications/notification1.html",context=tick_dict)
         text_content = strip_tags(html_content)
         email = EmailMultiAlternatives(
         "You have a Deliverable !!",
@@ -89,7 +92,7 @@ def braindesk(request):
         return salesremainder(request)
     else:
         today=str(date.today())
-        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains="Braindesk Request")
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__in=lis)
         tick_dict = {'Ticket':tickets}
         return render(request,'notifications/braindesk_deliverables.html',context=tick_dict)
 
@@ -121,7 +124,7 @@ def universe(request):
 def others(request):
     if request.method == "POST":
         today=str(date.today())
-        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today).exclude(Type__icontains = 'Universe Account Addition Request').exclude(Type__icontains="Braindesk Request")
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today).exclude(Type__icontains = 'Universe Account Addition Request').exclude(Type__icontains="Braindesk Request").exclude(Type__icontains="Braindesk Report Refresh Request")
         tick_dict = {'Ticket':tickets,'name':"Team,"}
         html_content = render_to_string("notifications/notification.html",context=tick_dict)
         text_content = strip_tags(html_content)
@@ -137,16 +140,20 @@ def others(request):
         return salesremainder(request)
     else:
         today=str(date.today())
-        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today).exclude(Type__icontains = 'Universe Account Addition Request').exclude(Type__icontains="Braindesk Request")
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today).exclude(Type__icontains = 'Universe Account Addition Request').exclude(Type__icontains="Braindesk Request").exclude(Type__icontains="Braindesk Report Refresh Request")
         tick_dict = {'Ticket':tickets}
         return render(request,'notifications/others_deliverables.html',context=tick_dict)
 
 def braindesk_confirm(request):
     if request.method == "POST":
         some_var = request.POST.getlist('Ticket_ID')
-        for i in some_var:
-            Confirmed_Ticket.objects.update_or_create(Ticket_ID=i,Created_time=timezone.now())
+        try:
+            for i in some_var:
+                Confirmed_Ticket.objects.update_or_create(Ticket_ID=i,Created_time=timezone.now())
+        except IntegrityError:
+                return HttpResponse("This ticket is already confirmed !!!")
         return thankyou(request)
+
     else:
         today=str(date.today())
         tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains="Braindesk Request")
@@ -158,10 +165,11 @@ def universe_confirm(request):
         some_var = request.POST.getlist('Ticket_ID')
         for i in some_var:
             Confirmed_Ticket.objects.update_or_create(Ticket_ID=i,Created_time=timezone.now())
-        return thankyou(request)
+            return thankyou(request)
+
     else:
         today=str(date.today())
-        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains = 'Universe Account Addition Request')
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains="Universe Account Addition Request")
         tick_dict = {'Ticket':tickets}
         return render(request,'notifications/universe_confirm.html',context=tick_dict)
 
@@ -169,9 +177,11 @@ def status(request):
     #d = datetime.now()
     #print(d)
     #print(d.date())
-    Confirmed_Tickets = Confirmed_Ticket.objects.all()
+    Confirmed_Tickets = Confirmed_Ticket.objects.filter(updated_time__icontains=date.today())
     tick_dict = {'Ticket':Confirmed_Tickets}
     return render(request,'notifications/status.html',context=tick_dict)
+
+
 
 @login_required(login_url = 'login_user')
 def upload(request):

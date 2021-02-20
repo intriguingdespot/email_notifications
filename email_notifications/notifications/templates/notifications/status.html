@@ -1,32 +1,47 @@
 <title>Draup-Remainders</title>
 {% extends 'notifications/base.html' %}
+<style media="screen">
+  .container {
+padding: 2rem 0rem;
+}
 
+h4 {
+margin: 2rem 0rem 1rem;
+}
+
+.table-image {
+td, th {
+vertical-align: middle;
+}
+}
+</style>
 {% block body_block %}
-<div class="tab">
+
+<div class="container">
   <br>
-  <h1>Confirmed Tickets !!</h1>
+  <h4>Today Confirmed Tickets...</h4>
+<div class="row">
+<div>
+<table class="table table-bordered">
   <br>
-    <table id="customers">
+  <thead>
     <tr>
-      <th style="text-align:center">S.No.</th>
-      <th style="text-align:center">Ticket No.</th>
-      <th style="text-align:center">Subject</th>
-      <th style="text-align:center">Stakeholder</th>
-      <th style="text-align:center">Company</th>
-      <th style="text-align:center">Delivery Date</th>
-      <th style="text-align:center">Type</th>
+      <th scope="col">S.No.</th>
+      <th  scope="col">Ticket No.</th>
+      <th  scope="col">Update</th>
     </tr>
-    {% for entry in Ticket %}
+  </thead>
+  {% for entry in Ticket %}
+  <tbody>
     <tr>
-      <td style="text-align:center">{{forloop.counter}}</td>
+      <td  style="text-align:center">{{forloop.counter}}</td>
       <td  style="text-align:center">{{entry.Ticket_ID}}</td>
-      <td>{{entry.Subject}}</td>
-      <td>{{entry.Full_name}}</td>
-      <td>{{entry.Company_Name}}</td>
-      <td style="text-align:center">{{entry.Estimated_Delivery_Date}}</td>
-      <td>{{entry.Type}}</td>
+      <td  style="text-align:center"><input onclick="return confirm('Are you sure do you want to continue ?');" class="btn btn-primary" type="submit" value="Update Status"></td>
     </tr>
     {% endfor %}
-  </table>
+  </tbody>
+</table>
+</div>
+</div>
 </div>
 {% endblock %}
