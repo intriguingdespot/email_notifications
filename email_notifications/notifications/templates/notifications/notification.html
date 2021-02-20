@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-    <title>Notification Email</title>
+    <title>Draup-Remainders</title>
     <style>
       body {
         background-color: #f6f6f6;
@@ -117,13 +117,13 @@
             <table class="main">
               <tr>
                 <td class="wrapper">
-                  <img src="C:\Users\User\github\email_notifications\email_notifications\notifications\static\images\draup-logo.png" alt="draup-logo" width="120" height="60">
                   <table border="0" cellpadding="0" cellspacing="0">
                     <tr>
                       <td>
-                        <br><h1 class="header" style="text-align:left">Hi Universe Team, <br><br>This is to keep you reminded about the deliverables today </h1>
+                        <br><h1 class="header" style="text-align:left">Hi {{name}} <br><br>Today Deliverables...</h1>
                           <table class="tickets">
                             <tr>
+                              <th class='head'>S.No.</th>
                               <th class='head'>Ticket No.</th>
                               <th class='head'>Subject</th>
                               <th class='head'>Stakeholder</th>
@@ -131,6 +131,7 @@
                             </tr>
                             {% for entry in Ticket %}
                             <tr>
+                              <td style="text-align:center" class='head'>{{forloop.counter}}</td>
                               <td style="text-align:center" class='head'>{{entry.Ticket_ID}}</td>
                               <td style="text-align:left" class='head'>{{entry.Subject}}</td>
                               <td style="text-align:center" class='head'>{{entry.Full_name}}</td>
@@ -141,11 +142,16 @@
                       </td>
                     </tr>
                   </table>
+                  <form method="post" enctype="multipart/form-data">
+                    <br>
+                    <br>
+                    <br><a class="btn btn-primary" href="http://127.0.0.1:8000/home/{{url}}/">Submit your response</a>
+                  </form>
                 </td>
               </tr>
             </table>
             <div class="notice">
-              <p><small>This email was sent to keep you informed about deliverables.</small></p>
+              <p><small>This email was sent to keep you reminded about today's sales deliverables.</small></p>
             </div>
             <div class="footer">
               <table border="0" cellpadding="0" cellspacing="0">

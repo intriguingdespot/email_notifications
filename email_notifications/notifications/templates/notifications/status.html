@@ -1,0 +1,47 @@
+<title>Draup-Remainders</title>
+{% extends 'notifications/base.html' %}
+<style media="screen">
+  .container {
+padding: 2rem 0rem;
+}
+
+h4 {
+margin: 2rem 0rem 1rem;
+}
+
+.table-image {
+td, th {
+vertical-align: middle;
+}
+}
+</style>
+{% block body_block %}
+
+<div class="container">
+  <br>
+  <h4>Today Confirmed Tickets...</h4>
+<div class="row">
+<div>
+<table class="table table-bordered">
+  <br>
+  <thead>
+    <tr>
+      <th scope="col">S.No.</th>
+      <th  scope="col">Ticket No.</th>
+      <th  scope="col">Update</th>
+    </tr>
+  </thead>
+  {% for entry in Ticket %}
+  <tbody>
+    <tr>
+      <td  style="text-align:center">{{forloop.counter}}</td>
+      <td  style="text-align:center">{{entry.Ticket_ID}}</td>
+      <td  style="text-align:center"><input onclick="return confirm('Are you sure do you want to continue ?');" class="btn btn-primary" type="submit" value="Update Status"></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+{% endblock %}
