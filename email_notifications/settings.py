@@ -25,7 +25,7 @@ SECRET_KEY = 'a5%dn#2pocr_4e6^(wl9f(qlrz3w%1@!gmovfy_u80@@j(b(8_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['draup-notifications-test.herokuapp.com']
 
 
 # Application definition
