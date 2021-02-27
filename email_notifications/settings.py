@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 
 import django_heroku
-import dj_database_url
+#import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
@@ -27,7 +27,7 @@ SECRET_KEY = 'a5%dn#2pocr_4e6^(wl9f(qlrz3w%1@!gmovfy_u80@@j(b(8_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['draup-notifications-test.herokuapp.com']
+ALLOWED_HOSTS = ['draup-notifications-test.herokuapp.com','127.0.0.1']
 
 
 # Application definition
@@ -86,14 +86,14 @@ DATABASES = {
     }
 }
 
-DATABASES = {
+#DATABASES = {
 
-    'default':dj_database_url.config()
-}
+    #'default':dj_database_url.config()
+#}
 
 
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db_from_env)
+#db_from_env = dj_database_url.config(conn_max_age=600)
+#DATABASES['default'].update(db_from_env)
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
