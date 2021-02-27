@@ -1,2 +1,2 @@
 web: gunicorn email_notifications.wsgi --log-file -
-celery: celery worker -A email_notifications -l info -c 4
+worker: celery -A email_notifications worker -l info -B --scheduler email_notifications.schedulers:DatabaseScheduler --without-gossip --without-mingle --without-heartbeat
