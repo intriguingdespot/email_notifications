@@ -150,4 +150,8 @@ django_heroku.settings(locals())
 #CELERY_CACHE_BACKEND = 'django-cache'
 
 CELERY_BROKER_URL = "redis://:pbe7a02be383ae5dc68197168ec34d7505b2c3f269bc44314b6cd4c9614815010@ec2-108-128-98-183.eu-west-1.compute.amazonaws.com:21739"
-CELERY_RESULT_BACKEND = "redis://:pbe7a02be383ae5dc68197168ec34d7505b2c3f269bc44314b6cd4c9614815010@ec2-108-128-98-183.eu-west-1.compute.amazonaws.com:21739"
+
+
+
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_RESULT_BACKEND = 'django-cache'
