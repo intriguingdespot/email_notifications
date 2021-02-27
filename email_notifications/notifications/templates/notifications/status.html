@@ -18,17 +18,21 @@ vertical-align: middle;
 {% block body_block %}
 
 <div class="container">
-  <br>
-  <h4>Today Confirmed Tickets...</h4>
+
 <div class="row">
 <div>
 <table class="table table-bordered">
   <br>
+  <h4>Today Confirmed Deliverables...</h4>
+  <br>
   <thead>
     <tr>
-      <th scope="col">S.No.</th>
-      <th  scope="col">Ticket No.</th>
-      <th  scope="col">Update</th>
+      <th style="text-align:center">S.No.</th>
+      <th  style="text-align:center">Ticket No.</th>
+      <th  style="text-align:center">Subject</th>
+      <th  style="text-align:center">Stakeholder</th>
+      <th  style="text-align:center">Company</th>
+      <!--<th  style="text-align:center">Confirmed Date</th> -->
     </tr>
   </thead>
   {% for entry in Ticket %}
@@ -36,7 +40,35 @@ vertical-align: middle;
     <tr>
       <td  style="text-align:center">{{forloop.counter}}</td>
       <td  style="text-align:center">{{entry.Ticket_ID}}</td>
-      <td  style="text-align:center"><input onclick="return confirm('Are you sure do you want to continue ?');" class="btn btn-primary" type="submit" value="Update Status"></td>
+      <td  style="text-align:left">{{entry.Subject}}</td>
+      <td style="text-align:center">{{entry.Full_name}}</td>
+      <td  style="text-align:center">{{entry.Company_Name}}</td>
+      <!--<td  style="text-align:center">{{entry.updated_time}}</td>-->
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<table class="table table-bordered">
+  <br>
+  <h4>Today Not Confirmed Deliverables...</h4>
+  <br>
+  <thead>
+    <tr>
+      <th style="text-align:center">S.No.</th>
+      <th  style="text-align:center">Ticket No.</th>
+      <th  style="text-align:center">Subject</th>
+      <th  style="text-align:center">Stakeholder</th>
+      <th  style="text-align:center">Company</th>
+    </tr>
+  </thead>
+  {% for entry in Ticketsnot %}
+  <tbody>
+    <tr>
+      <td  style="text-align:center">{{forloop.counter}}</td>
+      <td  style="text-align:center">{{entry.Ticket_ID}}</td>
+      <td  style="text-align:left">{{entry.Subject}}</td>
+      <td style="text-align:center">{{entry.Full_name}}</td>
+      <td  style="text-align:center">{{entry.Company_Name}}</td>
     </tr>
     {% endfor %}
   </tbody>

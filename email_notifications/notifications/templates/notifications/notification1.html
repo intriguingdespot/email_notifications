@@ -41,7 +41,7 @@
   <div class="tab">
     <br>
     <p>Hi {{name}}, </p>
-    <p>Please find your today deliverables,</p>
+    <p>Please find your {{day}} deliverables,</p>
     <br>
       <table id="customers">
       <tr>
@@ -64,6 +64,22 @@
       {% endfor %}
     </table>
     <br><a href="http://127.0.0.1:8000/home/{{url}}/"><button type="button" name="button">Confirm</button></a>
+
+    <div class="footer">
+      <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <td class="content-block">
+            <br>
+            <span class="apple-link">Thank you,</span>
+            <br><span class="apple-link">Draup Customer Sucess,</span>
+            <br><span class="apple-link">Santa Clara | Houston | Bangalore | Gurgaon | Nemili | Coimbatore</span>
+
+            <br>
+            <br><span class="apple-link"><em>Please contact <a href="mailto:customersupport_nemili@draup.com">customersupport_nemili@draup.com</a> for any queries</em></span>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
   </body>
 </html>

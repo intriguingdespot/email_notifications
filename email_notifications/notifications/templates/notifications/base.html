@@ -39,10 +39,9 @@ function myFunction() {
         <div class="navbar-nav">
 
           <!-- the span class "sr-only" tells screen readers that Home is the active link, for accessibility -->
-          <a class="nav-item nav-link " href="{%url 'home:salesremainder'%}">Today Deliverables</a>
-          <a class="nav-item nav-link " href="{%url 'home:braindesk'%}">Braindesk</a>
-          <a class="nav-item nav-link" href="{%url 'home:universe'%}">Universe</a>
-          <a class="nav-item nav-link" href="{%url 'home:others'%}">Others</a>
+          <a class="nav-item nav-link " href="{%url 'home:todaydeliverables'%}">Today Deliverables</a>
+          <a class="nav-item nav-link " href="{%url 'home:tomorrowdeliverables'%}">Tomorrow Deliverables</a>
+
 
           <!-- DROPDOWN MENU -->
 
@@ -53,7 +52,7 @@ function myFunction() {
 
         <!-- STUFF ON THE RIGHT -->
         <div class="navbar-nav ml-auto">
-          <a class="nav-item nav-link" href="{%url 'home:status'%}">Status</a>
+          <a class="nav-item nav-link" href="{%url 'home:ticket_status_today'%}">Ticket Status</a>
           <li class="dropdown dropdown-masked">
             <a href="#" class="nav-link dropdown-toggle" id="navbar-dropdown-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Welcome {{user}}</a>
             <ul class="dropdown-menu list-inline">
