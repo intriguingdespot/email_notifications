@@ -5,12 +5,12 @@
 
 <div class="tab">
   <nav>
-     <a href = "{%url 'home:today_braindesk'%}">Braindesk</a> |
-     <a href = "{%url 'home:today_universe'%}">Universe</a> |
-     <a href = "{%url 'home:today_others'%}">Others</a> |
+     <a href = "{%url 'home:tomorrow_braindesk'%}">Braindesk</a> |
+     <a href = "{%url 'home:tomorrow_universe'%}">Universe</a> |
+     <a href = "{%url 'home:tomorrow_others'%}">Others</a> |
   </nav>
   <br>
-  <h1>Today Deliverables !!</h1>
+  <h1>Braindesk Deliverables !!</h1>
   <br>
     <table id="customers">
     <tr>
@@ -29,13 +29,16 @@
       <td>{{entry.Subject}}</td>
       <td>{{entry.Full_name}}</td>
       <td>{{entry.Company_Name}}</td>
-      <td style="text-align:center">{{entry.Estimated_Delivery_Date}}</td>
+      <td style="text-align:center">{{entry.Estimated_Delivery_Date}}<
       <td>{{entry.Type}}</td>
     </tr>
     {% endfor %}
   </table>
-  <br><a class="btn btn-primary" href="{%url 'home:upload'%}">Refresh this Table</a>
-  <br>
-  <br>
+
+  <form  method="post">
+    {% csrf_token %}
+    <br><input onclick="return confirm('Are you sure do you want to continue ?');" class="btn btn-primary" type="submit" value="Send Notification">
+  </form>
+  
 </div>
 {% endblock %}

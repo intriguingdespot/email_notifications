@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
 import operator
-from django.db.models import Q
+
 from functools import reduce
 from django.urls import reverse
 
@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 
 from .models import Ticket,Confirmed_Ticket
-from datetime import date,datetime
+from datetime import date,datetime,timedelta
 from django.utils import timezone
 
 from django.db import IntegrityError
@@ -57,20 +57,25 @@ def thankyou(request):
     return render(request,'notifications/thankyou.html')
 
 @login_required(login_url = 'login_user')
-def salesremainder(request):
+def todaydeliverables(request):
     today=str(date.today())
     tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today)
     tick_dict = {'Ticket':tickets}
     return render(request,'notifications/today_deliverables.html',context=tick_dict)
 
+def tomorrowdeliverables(request):
+    tomorrow=str(date.today()+timedelta(days=1))
+    tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=tomorrow)
+    tick_dict = {'Ticket':tickets}
+    return render(request,'notifications/tomorrow_deliverables.html',context=tick_dict)
 
 @login_required(login_url = 'login_user')
-def braindesk(request):
+def today_braindesk(request):
     lis=['Braindesk Report Refresh Request','Braindesk Request']
     if request.method == "POST":
         today=str(date.today())
-        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains='Braindesk Request')
-        tick_dict = {'Ticket':tickets,'name':"Braindesk Team","url":"braindesk-deliverables"}
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__in=lis)
+        tick_dict = {'Ticket':tickets,'name':"Braindesk Team","url":"today/braindesk-deliverables","day":"Today"}
         #send_mail(
         #'You have Deliverable Today !!!',
         #"Good Eve !!!",
@@ -89,20 +94,20 @@ def braindesk(request):
         )
         email.attach_alternative(html_content,"text/html")
         email.send()
-        return salesremainder(request)
+        return todaydeliverables(request)
     else:
         today=str(date.today())
         tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__in=lis)
         tick_dict = {'Ticket':tickets}
-        return render(request,'notifications/braindesk_deliverables.html',context=tick_dict)
+        return render(request,'notifications/today_braindesk_deliverables.html',context=tick_dict)
 
 @login_required(login_url = 'login_user')
-def universe(request):
+def today_universe(request):
     if request.method == "POST":
         today=str(date.today())
         tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains = 'Universe Account Addition Request')
-        tick_dict = {'Ticket':tickets,'name':"Universe Team,","url":"universe-deliverables"}
-        html_content = render_to_string("notifications/notification.html",context=tick_dict)
+        tick_dict = {'Ticket':tickets,'name':"Universe Team,","url":"today/universe-deliverables","day":"Today"}
+        html_content = render_to_string("notifications/notification1.html",context=tick_dict)
         text_content = strip_tags(html_content)
         email = EmailMultiAlternatives(
         "You have a Deliverable !!",
@@ -113,20 +118,20 @@ def universe(request):
         )
         email.attach_alternative(html_content,"text/html")
         email.send()
-        return salesremainder(request)
+        return todaydeliverables(request)
     else:
         today=str(date.today())
         tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains = 'Universe Account Addition Request')
         tick_dict = {'Ticket':tickets}
-        return render(request,'notifications/universe_deliverables.html',context=tick_dict)
+        return render(request,'notifications/today_universe_deliverables.html',context=tick_dict)
 
 @login_required(login_url = 'login_user')
-def others(request):
+def today_others(request):
     if request.method == "POST":
         today=str(date.today())
         tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today).exclude(Type__icontains = 'Universe Account Addition Request').exclude(Type__icontains="Braindesk Request").exclude(Type__icontains="Braindesk Report Refresh Request")
         tick_dict = {'Ticket':tickets,'name':"Team,"}
-        html_content = render_to_string("notifications/notification.html",context=tick_dict)
+        html_content = render_to_string("notifications/notification1.html",context=tick_dict)
         text_content = strip_tags(html_content)
         email = EmailMultiAlternatives(
         "You have a Deliverable !!",
@@ -137,14 +142,15 @@ def others(request):
         )
         email.attach_alternative(html_content,"text/html")
         email.send()
-        return salesremainder(request)
+        return todaydeliverables(request)
     else:
         today=str(date.today())
         tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today).exclude(Type__icontains = 'Universe Account Addition Request').exclude(Type__icontains="Braindesk Request").exclude(Type__icontains="Braindesk Report Refresh Request")
         tick_dict = {'Ticket':tickets}
-        return render(request,'notifications/others_deliverables.html',context=tick_dict)
+        return render(request,'notifications/today_others_deliverables.html',context=tick_dict)
 
-def braindesk_confirm(request):
+def today_braindesk_confirm(request):
+    lis=['Braindesk Report Refresh Request','Braindesk Request']
     if request.method == "POST":
         some_var = request.POST.getlist('Ticket_ID')
         try:
@@ -156,31 +162,165 @@ def braindesk_confirm(request):
 
     else:
         today=str(date.today())
-        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains="Braindesk Request")
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__in=lis)
         tick_dict = {'Ticket':tickets}
         return render(request,'notifications/braindesk_confirm.html',context=tick_dict)
 
-def universe_confirm(request):
+def today_universe_confirm(request):
     if request.method == "POST":
         some_var = request.POST.getlist('Ticket_ID')
-        for i in some_var:
-            Confirmed_Ticket.objects.update_or_create(Ticket_ID=i,Created_time=timezone.now())
-            return thankyou(request)
-
+        try:
+            for i in some_var:
+                Confirmed_Ticket.objects.update_or_create(Ticket_ID=i,Created_time=timezone.now())
+        except IntegrityError:
+                return HttpResponse("This ticket is already confirmed !!!")
+        return thankyou(request)
     else:
         today=str(date.today())
         tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=today,Type__icontains="Universe Account Addition Request")
         tick_dict = {'Ticket':tickets}
         return render(request,'notifications/universe_confirm.html',context=tick_dict)
 
-def status(request):
+def ticket_status_today(request):
+    #d = datetime.now()
+    #print(d)
+    #print(d.date())
+    today=str(date.today())
+    Total_tick = Ticket.objects.values('Ticket_ID').filter(Estimated_Delivery_Date__icontains=today)
+    #withsu = Ticket.objects.filter(Ticket_ID__in=Total_tick)
+    Confirmed_Tickets = Confirmed_Ticket.objects.values('Ticket_ID').filter(updated_time__icontains=today)
+    not_confirmed_ticket = Total_tick.difference(Confirmed_Tickets)
+    #Confirmed_Tickets = Confirmed_Ticket.objects.filter(updated_time__icontains=date.today())
+    Confirmed_Tickets = Ticket.objects.filter(Ticket_ID__in=Confirmed_Tickets)
+    not_confirmed_ticket = Ticket.objects.filter(Ticket_ID__in=not_confirmed_ticket)
+    #firmed_Tickets = Ticket.objects.filter(Ticket_ID__in=Confirmed_Tickets)
+    #print(firmed_Tickets)
+    #joined_queryset=Confirmed_Ticket.objects.raw('SELECT notifications_confirmed_ticket.id,notifications_confirmed_ticket.Ticket_ID,notifications_ticket.Subject,notifications_ticket.Full_name,notifications_ticket.Company_Name,notifications_confirmed_ticket.updated_time FROM notifications_confirmed_ticket LEFT JOIN notifications_ticket ON notifications_confirmed_ticket.Ticket_ID=notifications_ticket.Ticket_ID')
+    tick_dict = {'Ticket':Confirmed_Tickets,'Ticketsnot':not_confirmed_ticket}
+    return render(request,'notifications/status.html',context=tick_dict)
+
+@login_required(login_url = 'login_user')
+def tomorrow_braindesk(request):
+    lis=['Braindesk Report Refresh Request','Braindesk Request']
+    if request.method == "POST":
+        tomorrow=str(date.today()+timedelta(days=1))
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=tomorrow,Type__in=lis)
+        tick_dict = {'Ticket':tickets,'name':"Braindesk Team","url":"tomorrow/braindesk-deliverables","day":"Tomorrow"}
+        #send_mail(
+        #'You have Deliverable Today !!!',
+        #"Good Eve !!!",
+        #settings.EMAIL_HOST_USER,
+        #['kesavan.ramalingam@draup.com'],
+        #fail_silently=False)
+        #print("mail sent sucess fully")
+        html_content = render_to_string("notifications/notification1.html",context=tick_dict)
+        text_content = strip_tags(html_content)
+        email = EmailMultiAlternatives(
+        "You have a Deliverable !!",
+        text_content,
+        settings.EMAIL_HOST_USER,
+        ['intriguing.despot@gmail.com'],
+        #cc=['kesavan.ramalingam@draup.com']
+        )
+        email.attach_alternative(html_content,"text/html")
+        email.send()
+        return todaydeliverables(request)
+    else:
+        tomorrow=str(date.today()+timedelta(days=1))
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=tomorrow,Type__in=lis)
+        tick_dict = {'Ticket':tickets}
+        return render(request,'notifications/tomorrow_braindesk_deliverables.html',context=tick_dict)
+
+@login_required(login_url = 'login_user')
+def tomorrow_universe(request):
+    if request.method == "POST":
+        tomorrow=str(date.today()+timedelta(days=1))
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=tomorrow,Type__icontains = 'Universe Account Addition Request')
+        tick_dict = {'Ticket':tickets,'name':"Universe Team,","url":"tomorrow/universe-deliverables","day":"Tomorrow"}
+        html_content = render_to_string("notifications/notification1.html",context=tick_dict)
+        text_content = strip_tags(html_content)
+        email = EmailMultiAlternatives(
+        "You have a Deliverable !!",
+        text_content,
+        settings.EMAIL_HOST_USER,
+        ['intriguing.despot@gmail.com'],
+        #cc=['kesavan.ramalingam@draup.com']
+        )
+        email.attach_alternative(html_content,"text/html")
+        email.send()
+        return todaydeliverables(request)
+    else:
+        tomorrow=str(date.today()+timedelta(days=1))
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=tomorrow,Type__icontains = 'Universe Account Addition Request')
+        tick_dict = {'Ticket':tickets}
+        return render(request,'notifications/tomorrow_universe_deliverables.html',context=tick_dict)
+
+@login_required(login_url = 'login_user')
+def tomorrow_others(request):
+    if request.method == "POST":
+        tomorrow=str(date.today()+timedelta(days=1))
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=tomorrow).exclude(Type__icontains = 'Universe Account Addition Request').exclude(Type__icontains="Braindesk Request").exclude(Type__icontains="Braindesk Report Refresh Request")
+        tick_dict = {'Ticket':tickets,'name':"Team,"}
+        html_content = render_to_string("notifications/notification1.html",context=tick_dict)
+        text_content = strip_tags(html_content)
+        email = EmailMultiAlternatives(
+        "You have a Deliverable !!",
+        text_content,
+        settings.EMAIL_HOST_USER,
+        ['intriguing.despot@gmail.com'],
+        #cc=['kesavan.ramalingam@draup.com']
+        )
+        email.attach_alternative(html_content,"text/html")
+        email.send()
+        return todaydeliverables(request)
+    else:
+        tomorrow=str(date.today()+timedelta(days=1))
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=tomorrow).exclude(Type__icontains = 'Universe Account Addition Request').exclude(Type__icontains="Braindesk Request").exclude(Type__icontains="Braindesk Report Refresh Request")
+        tick_dict = {'Ticket':tickets}
+        return render(request,'notifications/tomorrow_others_deliverables.html',context=tick_dict)
+
+@login_required(login_url = 'login_user')
+def tomorrow_braindesk_confirm(request):
+    lis=['Braindesk Report Refresh Request','Braindesk Request']
+    if request.method == "POST":
+        some_var = request.POST.getlist('Ticket_ID')
+        try:
+            for i in some_var:
+                Confirmed_Ticket.objects.update_or_create(Ticket_ID=i,Created_time=timezone.now())
+        except IntegrityError:
+                return HttpResponse("This ticket is already confirmed !!!")
+        return thankyou(request)
+
+    else:
+        tomorrow=str(date.today()+timedelta(days=1))
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=tomorrow,Type__in=lis)
+        tick_dict = {'Ticket':tickets}
+        return render(request,'notifications/braindesk_confirm.html',context=tick_dict)
+
+@login_required(login_url = 'login_user')
+def tomorrow_universe_confirm(request):
+    if request.method == "POST":
+        some_var = request.POST.getlist('Ticket_ID')
+        try:
+            for i in some_var:
+                Confirmed_Ticket.objects.update_or_create(Ticket_ID=i,Created_time=timezone.now())
+        except IntegrityError:
+                return HttpResponse("This ticket is already confirmed !!!")
+        return thankyou(request)
+    else:
+        tomorrow=str(date.today()+timedelta(days=1))
+        tickets = Ticket.objects.filter(Estimated_Delivery_Date__icontains=tomorrow,Type__icontains="Universe Account Addition Request")
+        tick_dict = {'Ticket':tickets}
+        return render(request,'notifications/universe_confirm.html',context=tick_dict)
+
+def ticket_status_tomorrow(request):
     #d = datetime.now()
     #print(d)
     #print(d.date())
     Confirmed_Tickets = Confirmed_Ticket.objects.filter(updated_time__icontains=date.today())
+    joined_queryset=Confirmed_Ticket.objects.raw('SELECT notifications_confirmed_ticket.id,notifications_confirmed_ticket.Ticket_ID,notifications_ticket.Subject,notifications_ticket.Full_name,notifications_ticket.Company_Name FROM notifications_confirmed_ticket LEFT JOIN notifications_ticket ON notifications_confirmed_ticket.Ticket_ID=notifications_ticket.Ticket_ID')
     tick_dict = {'Ticket':Confirmed_Tickets}
     return render(request,'notifications/status.html',context=tick_dict)
-
 
 
 @login_required(login_url = 'login_user')

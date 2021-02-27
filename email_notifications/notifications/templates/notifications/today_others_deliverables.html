@@ -2,7 +2,6 @@
 {% extends 'notifications/base.html' %}
 
 {% block body_block %}
-
 <div class="tab">
   <nav>
      <a href = "{%url 'home:today_braindesk'%}">Braindesk</a> |
@@ -10,7 +9,7 @@
      <a href = "{%url 'home:today_others'%}">Others</a> |
   </nav>
   <br>
-  <h1>Today Deliverables !!</h1>
+  <h1> Deliverables !!</h1>
   <br>
     <table id="customers">
     <tr>
@@ -34,8 +33,9 @@
     </tr>
     {% endfor %}
   </table>
-  <br><a class="btn btn-primary" href="{%url 'home:upload'%}">Refresh this Table</a>
-  <br>
-  <br>
+  <form  method="post">
+    {% csrf_token %}
+    <br><input onclick="return confirm('Are you sure do you want to continue ?');" class="btn btn-primary" type="submit" value="Send Notification">
+  </form>
 </div>
 {% endblock %}

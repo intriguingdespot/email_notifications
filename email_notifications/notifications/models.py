@@ -24,6 +24,7 @@ class Ticket(models.Model):
 
 class Confirmed_Ticket(models.Model):
     Ticket_ID = models.IntegerField(unique=True)
+    Subject = models.CharField(max_length=260,blank=True)
     Created_time = models.DateTimeField()
     updated_time = models.DateField(default=date.today())
 

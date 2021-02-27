@@ -2,7 +2,13 @@
 {% extends 'notifications/base.html' %}
 
 {% block body_block %}
+
 <div class="tab">
+  <nav>
+     <a href = "{%url 'home:today_braindesk'%}">Braindesk</a> |
+     <a href = "{%url 'home:today_universe'%}">Universe</a> |
+     <a href = "{%url 'home:today_others'%}">Others</a> |
+  </nav>
   <br>
   <h1>Universe Deliverables !!</h1>
   <br>

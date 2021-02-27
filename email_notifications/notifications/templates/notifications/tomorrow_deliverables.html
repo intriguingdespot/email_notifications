@@ -3,8 +3,13 @@
 
 {% block body_block %}
 <div class="tab">
+  <nav>
+     <a href = "{%url 'home:tomorrow_braindesk'%}">Braindesk</a> |
+     <a href = "{%url 'home:tomorrow_universe'%}">Universe</a> |
+     <a href = "{%url 'home:tomorrow_others'%}">Others</a> |
+  </nav>
   <br>
-  <h1>Braindesk Deliverables !!</h1>
+  <h1>Tomorrow Deliverables !!</h1>
   <br>
     <table id="customers">
     <tr>
@@ -28,9 +33,7 @@
     </tr>
     {% endfor %}
   </table>
-  <form  method="post">
-    {% csrf_token %}
-    <br><input onclick="return confirm('Are you sure do you want to continue ?');" class="btn btn-primary" type="submit" value="Send Notification">
-  </form>
+  <br>
+  <br>
 </div>
 {% endblock %}
