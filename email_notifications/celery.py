@@ -14,14 +14,15 @@ app = Celery('email_notifications')
 #   should have a `CELERY_` prefix.
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
-#app.conf.beat_schedule = {
-    #'add-every-30-seconds': {
-    #    'task': 'notifications.tasks.add',
-    #    'schedule': 30.0,
-    #    'args': (16, 16)
-    #},
-#}
-#app.conf.timezone = 'UTC'
+app.conf.beat_schedule = {
+    'add-every-30-seconds': {
+        'task': 'notifications.tasks.add',
+        'schedule': 30.0,
+        'args': (16, 16)
+    },
+}
+
+app.conf.timezone = 'Asia/Kolkata'
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()

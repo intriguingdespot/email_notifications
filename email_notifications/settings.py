@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'notifications',
     'django_celery_results',
-    'django_celery_beat',
+    'django_celery_beat'
 ]
 
 MIDDLEWARE = [
@@ -142,16 +142,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
 
 
 
 
 #CELERY_CACHE_BACKEND = 'django-cache'
 
-CELERY_BROKER_URL = "redis://:pbe7a02be383ae5dc68197168ec34d7505b2c3f269bc44314b6cd4c9614815010@ec2-108-128-98-183.eu-west-1.compute.amazonaws.com:21739"
-
-
+#CELERY_BROKER_URL = "redis://:pbe7a02be383ae5dc68197168ec34d7505b2c3f269bc44314b6cd4c9614815010@ec2-99-81-147-51.eu-west-1.compute.amazonaws.com:17960"
 
 CELERY_RESULT_BACKEND = 'django-db'
-CELERY_RESULT_BACKEND = 'django-cache'
+CELERY_CACHE_BACKEND = 'django-cache'
